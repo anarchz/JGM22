@@ -1,0 +1,11 @@
+{
+  "$schema" : "http://json-schema.org/draft-04/schema#",
+  "title" : "Input",
+  "type" : "object",
+  "properties" : {
+    "productID": { "type" : "number" },
+    "price": { "type" : "number" },
+    "name": { "type" : "string" },
+    "pic_url": { "type" : "string" }
+  }
+}
