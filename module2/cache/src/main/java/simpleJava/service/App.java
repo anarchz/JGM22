@@ -1,4 +1,4 @@
-package service;
+package simpleJava.service;
 
 public class App {
     public static void main(String[] args) throws InterruptedException {
@@ -15,7 +15,8 @@ public class App {
         cacheService.put(6, "entry6");
 
         System.out.println(cacheService.getCache());
-        Thread.sleep(600);
         cacheService.cleanerThread.stop(); //TODO: fix deprecated
+
+        cacheService.getStatistic();
     }
 }

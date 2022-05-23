@@ -1,6 +1,6 @@
-package service;
+package simpleJava.service;
 
-import dto.CacheItem;
+import simpleJava.dto.CacheItem;
 
 import java.util.ArrayList;
 import java.util.Date;
