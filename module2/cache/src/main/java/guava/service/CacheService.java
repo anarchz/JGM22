@@ -15,7 +15,7 @@ public class CacheService {
         cache = CacheBuilder
                 .newBuilder()
                 .maximumSize(capacity)
-                .expireAfterAccess(500, TimeUnit.MILLISECONDS)
+                .expireAfterWrite(500, TimeUnit.MILLISECONDS)
                 .removalListener(listener)
                 .build(loader);
     }

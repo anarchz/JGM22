@@ -15,7 +15,6 @@ public class App {
         cacheService.put(6, "entry6");
 
         System.out.println(cacheService.getCache());
-        cacheService.cleanerThread.stop(); //TODO: fix deprecated
 
         cacheService.getStatistic();
     }

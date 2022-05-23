@@ -14,6 +14,7 @@ public class CacheService {
     private static Map<Integer, CacheItem> cacheMap;
     private static ArrayList<Long> insertTime;
     public CleanerThread cleanerThread;
+    private int size;
 
     private int cacheEvictions;
     private int expirationTime = 500;
@@ -23,14 +24,16 @@ public class CacheService {
         this.cacheMap =  new ConcurrentHashMap<>(capacity);
         this.cacheEvictions = 0;
         insertTime = new ArrayList<>();
+        size = 0;
         cleanerThread = new CleanerThread();
         cleanerThread.start();
     }
 
-    public void removeEntry() {
+    private void removeEntry() {
         int entryKeyToBeRemoved = getLFUKey();
         cacheMap.remove(entryKeyToBeRemoved);
         cacheEvictions++;
+        size--;
         logger.info("entry removed:" + entryKeyToBeRemoved);
     }
 
@@ -53,6 +56,7 @@ public class CacheService {
         }
         logger.info("entry added:" + temp);
         cacheMap.put(key, temp);
+        size++;
     }
 
     public String get(int key) {
@@ -65,7 +69,7 @@ public class CacheService {
         return null;
     }
 
-    public int getLFUKey(){
+    private int getLFUKey(){
         int key = 0;
         int minFreq = Integer.MAX_VALUE;
 
@@ -78,7 +82,7 @@ public class CacheService {
         return key;
     }
 
-    public static boolean isFull() {
+    private static boolean isFull() {
         if(cacheMap.size() == capacity)
             return true;
         return false;
@@ -92,6 +96,10 @@ public class CacheService {
 
     public Map<Integer, CacheItem> getCache() {
         return cacheMap;
+    }
+
+    public int getSize() {
+        return size;
     }
 
     class CleanerThread extends Thread {
@@ -112,9 +120,10 @@ public class CacheService {
             long currentTime = new Date().getTime();
             for (int key : cacheMap.keySet()) {
                 if (currentTime > (cacheMap.get(key).getAvailableFrom() + expirationTime)) {
+                    logger.info("Removing : " + key);
                     cacheMap.remove(key);
                     cacheEvictions++;
-                    logger.info("Removing : " + key);
+                    size--;
                 }
             }
         }
