@@ -11,21 +11,21 @@ public class CacheServiceTest {
     @Before
     public void setUp() throws Exception {
         service = new CacheService(4);
-        service.cache.getUnchecked("first");
-        service.cache.getUnchecked("second");
-        service.cache.getUnchecked("third");
-        service.cache.getUnchecked("forth");
+        service.getCache().getUnchecked("first");
+        service.getCache().getUnchecked("second");
+        service.getCache().getUnchecked("third");
+        service.getCache().getUnchecked("forth");
     }
 
     @Test
     public void whenCacheReachMaxSize_thenEviction(){
-        service.cache.getUnchecked("fifth");
-        assertEquals(4, service.cache.size());
+        service.getCache().getUnchecked("fifth");
+        assertEquals(4, service.getCache().size());
     }
 
     @Test
     public void whenTimeExpires_thenEviction() throws InterruptedException {
         Thread.sleep(1000);
-        assertEquals(0, service.cache.size());
+        assertEquals(0, service.getCache().size());
     }
 }

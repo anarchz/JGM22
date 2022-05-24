@@ -8,7 +8,11 @@ import java.util.logging.Logger;
 public class CacheService {
     private Logger logger = Logger.getLogger(CacheService.class.getName());
     private static int capacity;
-    public LoadingCache<String, String> cache;
+    private LoadingCache<String, String> cache;
+
+    public LoadingCache<String, String> getCache() {
+        return cache;
+    }
 
     public CacheService(int capacity) {
         this.capacity = capacity;
