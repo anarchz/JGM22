@@ -5,6 +5,7 @@ import com.model.Ticket;
 import com.model.User;
 import com.service.EventService;
 import com.service.TicketService;
+import com.service.UserAccountService;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,12 @@ public class BookingFacadeImpl implements BookingFacade {
     private TicketService ticketService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserAccountService userAccountService;
+
+    public boolean refillAccount(double amount, long userId) {
+        return userAccountService.refillAccount(amount, userId);
+    }
 
     public Event getEventById(long eventId) {
         return eventService.getEventById(eventId);
@@ -69,8 +76,8 @@ public class BookingFacadeImpl implements BookingFacade {
         return userService.deleteUser(userId);
     }
 
-    public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category) {
-        return ticketService.bookTicket(userId, eventId, place, category);
+    public Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category, double amount) {
+        return ticketService.bookTicket(userId, eventId, place, category, amount);
     }
 
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {
@@ -81,7 +88,7 @@ public class BookingFacadeImpl implements BookingFacade {
         return ticketService.getBookedTickets(event, pageSize, pageNum);
     }
 
-    public boolean cancelTicket(long ticketId) {
-        return ticketService.cancelTicket(ticketId);
+    public boolean cancelTicket(long ticketId, double amount, long userId) {
+        return ticketService.cancelTicket(ticketId, amount, userId);
     }
 }

@@ -12,6 +12,12 @@ import java.util.List;
  * Created by maksym_govorischev.
  */
 public interface BookingFacade {
+    /**
+     * refill the account by money amount
+     * @param amount total money amount to add
+     * @return Flag that shows whether amount has been changed.
+     */
+    boolean refillAccount(double amount, long userId);
 
     /**
      * Gets event by its id.
@@ -109,10 +115,11 @@ public interface BookingFacade {
      * @param eventId Event Id.
      * @param place Place number.
      * @param category Service category.
+     * @param amount
      * @return Booked ticket object.
      * @throws java.lang.IllegalStateException if this place has already been booked.
      */
-    Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category);
+    Ticket bookTicket(long userId, long eventId, int place, Ticket.Category category, double amount);
 
     /**
      * Get all booked tickets for specified user. Tickets should be sorted by event date in descending order.
@@ -135,8 +142,10 @@ public interface BookingFacade {
     /**
      * Cancel ticket with a specified id.
      * @param ticketId Ticket id.
+     * @param amount
+     * @param userId
      * @return Flag whether anything has been canceled.
      */
-    boolean cancelTicket(long ticketId);
+    boolean cancelTicket(long ticketId, double amount, long userId);
 
 }

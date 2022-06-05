@@ -1,12 +1,26 @@
 package com.dao;
 
 import com.model.Ticket;
-
+import jakarta.persistence.*;
+@Entity
+@Table(name = "ticket")
 public class TicketDAO implements Ticket {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
+    @Column(name = "category")
+    @Enumerated (value = EnumType.STRING)
     private Category category;
+    @Column(name = "place")
     private int place;
+    @Column(name = "eventId")
+    @ManyToOne
+    @JoinColumn(name = "id",nullable = false, insertable = false, updatable = false)
     private long eventId;
+    @Column(name = "userId")
+    @ManyToOne
+    @JoinColumn(name = "id",nullable = false, insertable = false, updatable = false)
     private long userId;
 
     public TicketDAO(long id, Category category, int place, long eventId, long userId) {
