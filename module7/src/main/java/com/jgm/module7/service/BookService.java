@@ -22,15 +22,8 @@ public class BookService {
         return repository.save(book);
     }
 
-    // TODO:Should it be moved to BookRepositoryImpl class with using persistent context?
     public Book update(Long id, Book book) {
-        Book updated = repository.findById(id).get();
-        updated.setAuthor(book.getAuthor());
-        updated.setName(book.getName());
-        updated.setPrice(book.getPrice());
-        updated.setPublishDate(book.getPublishDate());
-
-        return repository.save(updated);
+        return repository.save(book);
     }
 
     public void deleteById(long id) {

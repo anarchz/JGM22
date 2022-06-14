@@ -1,0 +1,2 @@
+INSERT INTO BOOKS (name,author,publish_date,price) VALUES ('Fahrenheit 451','Ray Bradbury',DATE '1953-10-19',15.99);
+INSERT INTO BOOKS (name,author,publish_date,price) VALUES ('Brave new world','Aldous Huxley',DATE '1932-01-20',20.99)

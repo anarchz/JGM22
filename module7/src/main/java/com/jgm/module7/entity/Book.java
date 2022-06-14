@@ -1,6 +1,7 @@
 package com.jgm.module7.entity;
 
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,9 +23,10 @@ public class Book {
     private String name;
     private String author;
     private double price;
-    private LocalDateTime publishDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date publishDate;
 
-    public Book(String name, String author, LocalDateTime publishDate,double price) {
+    public Book(String name, String author, Date publishDate,double price) {
         this.name = name;
         this.author = author;
         this.price = price;
