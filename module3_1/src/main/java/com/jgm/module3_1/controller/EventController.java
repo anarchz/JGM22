@@ -15,7 +15,7 @@ public class EventController {
 
     @GetMapping("/events/byTitle")
     public List<Event> getEventsBy(@RequestParam String title) {
-        return booking.getEventsByTitle(title,5, 0);
+        return booking.getEventsByTitle(title,5, 1);
     }
 
     @PostMapping("/events/create")

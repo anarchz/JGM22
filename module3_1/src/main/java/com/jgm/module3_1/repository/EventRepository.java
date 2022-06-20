@@ -12,5 +12,6 @@ import java.util.List;
 @Repository
 public interface EventRepository extends JpaRepository<Event, Long> {
     List<Event> findAllByTitle(String title, Pageable pageable);
+    List<Event> findAllByTitle(String title);
     List<Event> findAllByDate(Date day, PageRequest of);
 }
