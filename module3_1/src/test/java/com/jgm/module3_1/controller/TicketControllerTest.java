@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,8 +24,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@AutoConfigureMockMvc
 class TicketControllerTest {
 
+    @Autowired
     private MockMvc mvc;
 
     @Autowired
@@ -33,13 +36,6 @@ class TicketControllerTest {
     @Autowired
     private TicketRepository repository;
 
-    @Before
-    public void setup() {
-        mvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .build();
-    }
-
     @Test
     void delete() throws Exception {
         User user1 = new User(1L, "name1", "email1@gmail.com");
@@ -47,11 +43,13 @@ class TicketControllerTest {
         Ticket ticket = new Ticket(1L, Ticket.Category.STANDARD, 1, event1, user1);
 
         repository.save(ticket);
-        mvc.perform(get("http://localhost:8080/ticket/delete/1")).andExpect(status().isOk());
+        mvc.perform(get("http://localhost:8080/ticket/delete/1"))
+                .andExpect(status().isOk());
     }
 
     @Test
     void create() throws Exception {
-        mvc.perform(get("http://localhost:8080/ticket/create?userId=1&eventId=1&place=1&category=STANDART")).andExpect(status().isOk());
+        mvc.perform(get("http://localhost:8080/ticket/create?userId=1&eventId=1&place=1&category=STANDART"))
+                .andExpect(status().isOk());
     }
 }
