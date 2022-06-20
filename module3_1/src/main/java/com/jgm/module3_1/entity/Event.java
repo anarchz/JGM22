@@ -31,4 +31,11 @@ public class Event {
         this.title = title;
         this.date = date;
     }
+
+    public Event(long id, String title, Date date, double ticketPrice) {
+        this.id = id;
+        this.title = title;
+        this.date = date;
+        this.ticketPrice = ticketPrice;
+    }
 }
