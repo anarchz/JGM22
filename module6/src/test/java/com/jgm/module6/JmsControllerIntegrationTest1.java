@@ -48,8 +48,6 @@ public class JmsControllerIntegrationTest1 {
         controller.create(1L, 1L, 1, Ticket.Category.STANDARD);
 
         Ticket savedTicket = ticketRepository.findById(1L).get();
-
-        System.out.println(savedTicket);
         Assertions.assertEquals(savedTicket, ticket);
     }
 

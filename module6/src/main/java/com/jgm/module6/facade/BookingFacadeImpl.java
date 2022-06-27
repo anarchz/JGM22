@@ -7,6 +7,7 @@ import com.jgm.module6.entity.User;
 import com.jgm.module6.service.EventService;
 import com.jgm.module6.service.TicketService;
 import com.jgm.module6.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Component
+@Slf4j
 public class BookingFacadeImpl implements BookingFacade {
     @Autowired
     private EventService eventService;
@@ -73,10 +75,15 @@ public class BookingFacadeImpl implements BookingFacade {
         return userService.deleteUser(userId);
     }
 
-    public void bookTicket(User userId, Event eventId, int place, Ticket.Category category) {
+    public Boolean bookTicket(User userId, Event eventId, int place, Ticket.Category category) {
         BookingMessage message = new BookingMessage(userId, eventId, place, category);
-
-        jmsTemplate.convertAndSend("bookingQueue", message);
+        try{
+            jmsTemplate.convertAndSend("bookingQueue", message);
+            return true;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return false;
+        }
     }
 
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {

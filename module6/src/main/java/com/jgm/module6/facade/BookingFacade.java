@@ -112,7 +112,7 @@ public interface BookingFacade {
      * @return Booked ticket object.
      * @throws IllegalStateException if this place has already been booked.
      */
-    void bookTicket(User userId, Event eventId, int place, Ticket.Category category);
+    Boolean bookTicket(User userId, Event eventId, int place, Ticket.Category category);
 
     /**
      * Get all booked tickets for specified user. Tickets should be sorted by event date in descending order.
