@@ -22,7 +22,7 @@ public class Event {
     @DateTimeFormat
     @Column(name ="event_date")
     private Date date;
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "event", fetch = FetchType.EAGER)
     private List<Ticket> tickets;
     private double ticketPrice;
 

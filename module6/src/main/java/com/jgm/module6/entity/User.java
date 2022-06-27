@@ -18,7 +18,7 @@ public class User {
     private long id;
     private String name;
     private String email;
-    @OneToMany(mappedBy = "ticketUser")
+    @OneToMany(mappedBy = "ticketUser", fetch = FetchType.EAGER)
     private List<Ticket> tickets;
     @OneToOne
     @JoinColumn(name = "account_id", referencedColumnName = "id")

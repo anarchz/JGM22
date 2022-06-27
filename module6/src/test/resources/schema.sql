@@ -1,0 +1,28 @@
+DROP TABLE EVENT IF EXISTS;
+DROP TABLE TICKET IF EXISTS;
+DROP TABLE USER_TABLE IF EXISTS;
+DROP TABLE USER_ACCOUNT IF EXISTS;
+
+CREATE TABLE USER_TABLE (
+	id BIGINT auto_increment primary key NOT NULL,
+	name VARCHAR(50) NULL,
+	email VARCHAR(50) NULL
+);
+
+CREATE TABLE TICKET (
+	id BIGINT auto_increment primary key NOT NULL,
+	category VARCHAR(50) NULL,
+	place INTEGER NULL
+);
+
+CREATE TABLE EVENT (
+	id BIGINT auto_increment primary key NOT NULL,
+	title VARCHAR(50) NULL,
+	event_date DATE NULL,
+	ticketPrice NUMERIC NOT NULL
+);
+
+CREATE TABLE USER_ACCOUNT (
+	id BIGINT auto_increment primary key NOT NULL,
+    moneyAmount NUMERIC NOT NULL
+);

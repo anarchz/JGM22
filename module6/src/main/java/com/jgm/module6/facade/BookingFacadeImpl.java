@@ -1,5 +1,6 @@
 package com.jgm.module6.facade;
 
+import com.jgm.module6.entity.BookingMessage;
 import com.jgm.module6.entity.Event;
 import com.jgm.module6.entity.Ticket;
 import com.jgm.module6.entity.User;
@@ -7,6 +8,7 @@ import com.jgm.module6.service.EventService;
 import com.jgm.module6.service.TicketService;
 import com.jgm.module6.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -20,6 +22,8 @@ public class BookingFacadeImpl implements BookingFacade {
     private TicketService ticketService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     public Event getEventById(long eventId) {
         return eventService.getEventById(eventId);
@@ -69,8 +73,10 @@ public class BookingFacadeImpl implements BookingFacade {
         return userService.deleteUser(userId);
     }
 
-    public Ticket bookTicket(User userId, Event eventId, int place, Ticket.Category category) {
-        return ticketService.bookTicket(userId, eventId, place, category);
+    public void bookTicket(User userId, Event eventId, int place, Ticket.Category category) {
+        BookingMessage message = new BookingMessage(userId, eventId, place, category);
+
+        jmsTemplate.convertAndSend("bookingQueue", message);
     }
 
     public List<Ticket> getBookedTickets(User user, int pageSize, int pageNum) {

@@ -30,7 +30,7 @@ public class TicketController {
     }
 
     @PostMapping("/ticket/create")
-    public Ticket create(@RequestParam Long userId, @RequestParam Long eventId, @RequestParam Integer place, @RequestParam Ticket.Category category){
-        return booking.bookTicket(booking.getUserById(userId), booking.getEventById(eventId), place, category);
+    public void create(@RequestParam Long userId, @RequestParam Long eventId, @RequestParam Integer place, @RequestParam Ticket.Category category){
+        booking.bookTicket(booking.getUserById(userId), booking.getEventById(eventId), place, category);
     }
 }
