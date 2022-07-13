@@ -27,15 +27,14 @@ public class EventServiceController {
     }
 
     @ApiOperation(value = "get all events by title")
-    @ApiImplicitParams({@ApiImplicitParam(value = "title1", name = "title")})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Successfully retrieved events"),
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    @GetMapping(value = "/events", params = "title", produces = "application/json")
-    public List<Event> getAllByTitle(@RequestParam String title) {
+    @GetMapping(value = "/events/title/{title}", produces = "application/json")
+    public List<Event> getAllByTitle(@ApiParam(value = "title",required = true) @PathVariable String title) {
         return service.getAllEventsByTitle(title);
     }
 
@@ -47,7 +46,7 @@ public class EventServiceController {
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
     })
-    @GetMapping(value = "/events/list", produces = "application/json")
+    @GetMapping(value = "/events", produces = "application/json")
     public List<Event> getAll() {
         return service.getAllEvents();
     }
