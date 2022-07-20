@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,5 +66,20 @@ public class TemplateEngineTest {
         String result = "Some text: subject - newSubject, value - #{tag}";
         String message = engine.generateMessage(template, client);
         Assertions.assertEquals(result, message);
+    }
+
+    @Test
+    public void shouldBeLatin1() {
+        Map<String, String> values = new HashMap<>();
+        values.put("subject", "newSubjectЇ");
+        values.put("value", "newValue");
+        template.setMessage("Some text: subject - #{subject}, value - #{value}");
+        template.setValues(values);
+        String message = engine.generateMessage(template, client);
+
+        String probeLatin1 = new String(message.getBytes(StandardCharsets.ISO_8859_1));
+        boolean isCharsetEqual = message.equals(probeLatin1);
+
+        Assertions.assertFalse(isCharsetEqual);
     }
 }
