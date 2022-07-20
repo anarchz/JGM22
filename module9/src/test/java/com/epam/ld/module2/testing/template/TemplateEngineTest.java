@@ -53,4 +53,16 @@ public class TemplateEngineTest {
         String message = engine.generateMessage(template, client);
         Assertions.assertEquals(result, message);
     }
+
+    @Test
+    public void shouldReplaceValueWithPlaceholders() {
+        Map<String, String> values = new HashMap<>();
+        values.put("subject", "newSubject");
+        values.put("value", "#{tag}");
+        template.setMessage("Some text: subject - #{subject}, value - #{value}");
+        template.setValues(values);
+        String result = "Some text: subject - newSubject, value - #{tag}";
+        String message = engine.generateMessage(template, client);
+        Assertions.assertEquals(result, message);
+    }
 }
