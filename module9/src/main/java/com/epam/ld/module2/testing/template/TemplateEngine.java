@@ -2,8 +2,6 @@ package com.epam.ld.module2.testing.template;
 
 import com.epam.ld.module2.testing.Client;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The type Template engine.
@@ -19,7 +17,9 @@ public class TemplateEngine {
     public String generateMessage(Template template, Client client) {
         String message = template.getMessage();
         String subject = template.getSubject();
+        String value = template.getValue();
 
-        return message.replace("#{subject}", subject);
+        String result = message.replace("#{value}", value);
+        return result.replace("#{subject}", subject);
     }
 }

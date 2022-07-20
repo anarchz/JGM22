@@ -20,8 +20,16 @@ public class TemplateEngineTest {
     @Test
     public void shouldReplacePlaceholders() {
         template.setSubject("newSubject");
-        String result = "Some text: newSubject";
+        template.setValue("newValue");
+        String result = "Some text: subject - newSubject, value - newValue";
         String message = engine.generateMessage(template, client);
         Assertions.assertEquals(result, message);
+    }
+
+    @Test
+    public void placeholdersNotProvided() {
+        template.setSubject(null);
+        template.setValue("newValue");
+        Assertions.assertThrows(NullPointerException.class, () -> engine.generateMessage(template, client));
     }
 }
