@@ -1,17 +1,19 @@
 package task1;
 
+import java.util.Collections;
 import java.util.ConcurrentModificationException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ThreadInit {
     public static void main(String[] args) {
-        HashMap<Integer, Integer> map = new HashMap<>();
-
+//        Map<Integer, Integer> map = Collections.synchronizedMap(new HashMap<>());
+        Map<Integer, Integer> map = new ConcurrentHashMap<>();
         Thread threadAdd = new Thread(() -> {
             Integer key = 0;
-            while (!Thread.currentThread().isInterrupted()) {
-                    map.put(key++, key++);
+            while (true) {
+                    map.put(key++, key);
                     System.out.println(Thread.currentThread().getName() + " add " + " " + key);
                     try {
                         Thread.sleep(100);
@@ -23,7 +25,6 @@ public class ThreadInit {
 
         Thread threadSum = new Thread(() -> {
             while (true){
-                try {
                     Integer sum = 0;
                     for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
                         sum += entry.getValue();
@@ -34,12 +35,6 @@ public class ThreadInit {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                }catch (ConcurrentModificationException e) {
-                    e.printStackTrace();
-                    threadAdd.interrupt();
-                    break;
-                }
-
             }
         });
 
