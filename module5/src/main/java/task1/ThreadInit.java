@@ -8,8 +8,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ThreadInit {
     public static void main(String[] args) {
-//        Map<Integer, Integer> map = Collections.synchronizedMap(new HashMap<>());
-        Map<Integer, Integer> map = new ConcurrentHashMap<>();
+//        Map<Integer, Integer> map1 = Collections.synchronizedMap(new HashMap<>());
+//        Map<Integer, Integer> map = new ConcurrentHashMap<>();
+        ThreadSafeMap.SynchronizedMap<Integer, Integer> map = new ThreadSafeMap.SynchronizedMap<>();
+
         Thread threadAdd = new Thread(() -> {
             Integer key = 0;
             while (true) {
