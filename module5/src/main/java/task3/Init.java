@@ -11,6 +11,7 @@ public class Init {
         Thread consume = new Thread(consumer);
 
         produce.start();
+        Thread.sleep(100);
         consume.start();
 
         Thread.sleep(1000);
