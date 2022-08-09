@@ -28,8 +28,10 @@ public class ThreadInit {
         Thread threadSum = new Thread(() -> {
             while (true){
                     Integer sum = 0;
-                    for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-                        sum += entry.getValue();
+                    synchronized (map) {
+                        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+                            sum += entry.getValue();
+                        }
                     }
                     System.out.println(Thread.currentThread().getName() + " sum " + sum);
                     try {
