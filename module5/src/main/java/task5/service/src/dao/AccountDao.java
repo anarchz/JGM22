@@ -1,40 +1,40 @@
 package dao;
 
 
+import exception.AccountException;
 import model.Account;
-import model.Currency;
 import utility.AccountUtility;
 
-import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AccountDao {
-    private static volatile int accountCount = 1;
+    private static AtomicInteger accountCount = new AtomicInteger(1);
 
     public AccountDao() {
     }
 
-    public Account getAccount(Integer id) {
+    public synchronized Account getAccount(Integer id) throws AccountException {
         String fileName = String.format("module5/src/main/resources/task5/acc%s.txt", id);
         return AccountUtility.read(fileName);
     }
 
-    public synchronized void createAccount(Account account) {
+    public synchronized void createAccount(Account account) throws AccountException {
         String fileName = String.format("module5/src/main/resources/task5/acc%s.txt", account.getId());
         AccountUtility.write(fileName, account);
-        accountCount++;
+        accountCount.getAndAdd(1);
     }
 
-    public synchronized void updateAccount(Account account) {
+    public synchronized void updateAccount(Account account) throws AccountException {
         String fileName = String.format("module5/src/main/resources/task5/acc%s.txt", account.getId());
         AccountUtility.write(fileName, account);
     }
 
-    public synchronized void deleteAccount(Integer id) {
+    public synchronized void deleteAccount(Integer id) throws AccountException {
         String fileName = String.format("module5/src/main/resources/task5/acc%s.txt", id);
         AccountUtility.delete(fileName);
     }
 
     public int getAccountCount() {
-        return accountCount;
+        return accountCount.get();
     }
 }

@@ -6,6 +6,7 @@ public class Currency implements Serializable {
     private String name;
     private ExchangeRate rate;
 
+    public Currency() {}
     public Currency(String name, ExchangeRate rate) {
         this.name = name;
         this.rate = rate;

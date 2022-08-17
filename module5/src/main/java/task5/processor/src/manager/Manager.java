@@ -1,11 +1,8 @@
 package manager;
 
-import dao.ExchangeRateDao;
 import model.Account;
 import model.Currency;
 import model.ExchangeRate;
-import service.AccountService;
-import service.CurrencyService;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -14,17 +11,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Logger;
 
 public class Manager {
 
     private static AccountManager accountManager = new AccountManager();
+    private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
-
-
 
         Runnable runnable1 = new Runnable() {
             @Override
@@ -36,7 +33,7 @@ public class Manager {
                 int toConvert = 100;
                 for(Currency currency: account.getCurrencyValues()) {
                     converted = CurrencyManager.exchange(currency, new BigDecimal(toConvert));
-                    System.out.println(account+ "; convert " + toConvert + " to currency: " + converted);
+                    LOGGER.info(account+ "; convert " + toConvert + currency.getName() +" to currency: " + converted);
                 }
 
             }
@@ -51,7 +48,7 @@ public class Manager {
                 int toConvert = 200;
                 for(Currency currency: account.getCurrencyValues()) {
                     converted = CurrencyManager.exchange(currency, new BigDecimal(toConvert));
-                    System.out.println(account+ "; convert " + toConvert + " to currency: " + converted);
+                    LOGGER.info(account+ "; convert " + toConvert + currency.getName() +" to currency: " + converted);
                 }
 
             }
@@ -60,14 +57,14 @@ public class Manager {
         Runnable runnable3 = new Runnable() {
             @Override
             public void run() {
-                init(3);
+                init(2);
 
-                Account account = accountManager.getAcc(3);
+                Account account = accountManager.getAcc(2);
                 Map<String, BigDecimal> converted = null;
-                int toConvert = 700;
+                int toConvert = 1000;
                 for(Currency currency: account.getCurrencyValues()) {
                     converted = CurrencyManager.exchange(currency, new BigDecimal(toConvert));
-                    System.out.println(account+ "; convert " + toConvert + " to currency: " + converted);
+                    LOGGER.info(account+ "; convert " + toConvert + currency.getName() +" to currency: " + converted);
                 }
 
             }
@@ -77,6 +74,8 @@ public class Manager {
         executorService.execute(runnable2);
         executorService.execute(runnable3);
 
+        Thread.sleep(1500);
+        executorService.shutdown();
     }
 
     private static void init(Integer id) {
@@ -113,6 +112,6 @@ public class Manager {
 
         Account account = new Account(id, currencyList);
 
-        accountManager.addAcc(account);
+        accountManager.editAcc(account);
     }
 }

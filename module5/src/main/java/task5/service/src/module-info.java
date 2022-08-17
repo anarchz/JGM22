@@ -4,4 +4,5 @@ module service {
     exports dao;
     exports utility;
     exports model;
+    exports exception;
 }

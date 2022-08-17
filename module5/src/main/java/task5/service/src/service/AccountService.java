@@ -2,6 +2,7 @@ package service;
 
 
 import dao.AccountDao;
+import exception.AccountException;
 import model.Account;
 
 public class AccountService {
@@ -11,20 +12,20 @@ public class AccountService {
         accountDao = new AccountDao();
     }
 
-    public void createAccount(Account account) {
+    public synchronized void createAccount(Account account) throws AccountException {
         account.setId(accountDao.getAccountCount());
         accountDao.createAccount(account);
     }
 
-    public void deleteAccount(Integer id) {
+    public synchronized void deleteAccount(Integer id) throws AccountException {
         accountDao.deleteAccount(id);
     }
 
-    public Account getAccount(Integer id) {
+    public synchronized Account getAccount(Integer id) throws AccountException {
         return accountDao.getAccount(id);
     }
 
-    public void updateAccount(Account account) {
+    public synchronized void updateAccount(Account account) throws AccountException {
         accountDao.updateAccount(account);
     }
 }
