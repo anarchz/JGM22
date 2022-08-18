@@ -19,8 +19,4 @@ public class Init {
         producer.stop();
 
     }
-
-    // добавить проверку с флагом
-    // executor
-    // atomicboolean вместо volatile
 }
