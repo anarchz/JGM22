@@ -1,5 +1,6 @@
 package manager;
 
+import exception.CurrencyException;
 import model.Account;
 import model.Currency;
 import model.ExchangeRate;
@@ -13,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-public class Manager {
+public class AppManager {
 
     private static AccountManager accountManager = new AccountManager();
     private final static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
@@ -32,7 +33,11 @@ public class Manager {
                 Map<String, BigDecimal> converted = null;
                 int toConvert = 100;
                 for(Currency currency: account.getCurrencyValues()) {
-                    converted = CurrencyManager.exchange(currency, new BigDecimal(toConvert));
+                    try {
+                        converted = CurrencyManager.exchange(currency, new BigDecimal(toConvert));
+                    } catch (CurrencyException e) {
+                        LOGGER.info(account+ "; was not converted convert " + toConvert + currency.getName());
+                    }
                     LOGGER.info(account+ "; convert " + toConvert + currency.getName() +" to currency: " + converted);
                 }
 
@@ -47,7 +52,11 @@ public class Manager {
                 Map<String, BigDecimal> converted = null;
                 int toConvert = 200;
                 for(Currency currency: account.getCurrencyValues()) {
-                    converted = CurrencyManager.exchange(currency, new BigDecimal(toConvert));
+                    try {
+                        converted = CurrencyManager.exchange(currency, new BigDecimal(toConvert));
+                    } catch (CurrencyException e) {
+                        LOGGER.info(account+ "; was not converted convert " + toConvert + currency.getName());
+                    }
                     LOGGER.info(account+ "; convert " + toConvert + currency.getName() +" to currency: " + converted);
                 }
 
@@ -63,7 +72,11 @@ public class Manager {
                 Map<String, BigDecimal> converted = null;
                 int toConvert = 1000;
                 for(Currency currency: account.getCurrencyValues()) {
-                    converted = CurrencyManager.exchange(currency, new BigDecimal(toConvert));
+                    try {
+                        converted = CurrencyManager.exchange(currency, new BigDecimal(toConvert));
+                    } catch (CurrencyException e) {
+                        LOGGER.info(account+ "; was not converted convert " + toConvert + currency.getName());
+                    }
                     LOGGER.info(account+ "; convert " + toConvert + currency.getName() +" to currency: " + converted);
                 }
 

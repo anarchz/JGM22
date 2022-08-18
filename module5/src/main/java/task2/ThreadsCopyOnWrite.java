@@ -6,23 +6,12 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Threads {
+public class ThreadsCopyOnWrite {
     public static void main(String[] args) throws InterruptedException {
-        final List<Integer> randomNums = new ArrayList<>();
-        AtomicBoolean addB = new AtomicBoolean(false);
-        AtomicBoolean sumB = new AtomicBoolean(true);
-        AtomicBoolean sqrtB = new AtomicBoolean(true);
+        final List<Integer> randomNums = new CopyOnWriteArrayList<>();
 
         Thread threadAdd = new Thread(() -> {
             while (true) {
-                synchronized (randomNums) {
-                    while(!sumB.get() && !sqrtB.get()) {
-                        try {
-                            randomNums.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
                     Integer i = new Random().nextInt(10);
                     randomNums.add(i);
 
@@ -32,24 +21,11 @@ public class Threads {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    addB.set(true);
-                    sumB.set(false);
-                    sqrtB.set(false);
-                    randomNums.notifyAll();
-                }
             }
         });
 
         Thread threadSum = new Thread(() -> {
             while (true) {
-                synchronized (randomNums) {
-                    while (!addB.get()){
-                        try {
-                            randomNums.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
                     Integer sum = 0;
                     for (Integer i : randomNums) {
                         sum += i;
@@ -60,22 +36,11 @@ public class Threads {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    sumB.set(true);
-                    randomNums.notifyAll();
-                }
             }
         });
 
         Thread threadSquareRoot = new Thread(() -> {
             while (true) {
-                synchronized (randomNums) {
-                    while (!addB.get()){
-                        try {
-                            randomNums.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
                     int root = 0;
                     for (Integer i : randomNums) {
                         root += (i * i);
@@ -86,9 +51,6 @@ public class Threads {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    sqrtB.set(true);
-                    randomNums.notifyAll();
-                }
             }
         });
 

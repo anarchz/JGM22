@@ -1,15 +1,16 @@
 package task3;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Producer implements Runnable {
     private final MessageBus queue;
-    private volatile boolean runFlag;
+    private AtomicBoolean runFlag = new AtomicBoolean();
     private final Random random;
 
     public Producer(MessageBus queue) {
         this.queue = queue;
-        runFlag = true;
+        runFlag.set(true);
         random = new Random();
     }
 
@@ -19,7 +20,7 @@ public class Producer implements Runnable {
     }
 
     public void produce() {
-        while (runFlag) {
+        while (runFlag.get()) {
             Message message = generateMessage();
             while (queue.isFull()) {
                 try {
@@ -28,7 +29,7 @@ public class Producer implements Runnable {
                     break;
                 }
             }
-            if (!runFlag) {
+            if (!runFlag.get()) {
                 System.out.println("Producer break");
                 break;
             }
@@ -38,8 +39,10 @@ public class Producer implements Runnable {
     }
 
     public void stop() {
-        runFlag = false;
-        queue.notifyAllForFull();
+        while(queue.isStop()) {
+            runFlag.set(false);
+            queue.notifyAllForFull();
+        }
     }
 
 

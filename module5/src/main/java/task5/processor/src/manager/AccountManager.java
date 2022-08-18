@@ -34,7 +34,7 @@ public class AccountManager {
         }
     }
 
-    public Account getAcc(Integer id) {
+    public synchronized Account getAcc(Integer id) {
         try {
             return accountService.getAccount(id);
         } catch (AccountException e) {

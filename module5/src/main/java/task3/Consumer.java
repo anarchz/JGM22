@@ -1,12 +1,14 @@
 package task3;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Consumer implements Runnable {
     private final MessageBus queue;
-    private volatile boolean runFlag;
+    private AtomicBoolean runFlag = new AtomicBoolean();
 
     public Consumer(MessageBus queue) {
         this.queue = queue;
-        runFlag = true;
+        runFlag.set(true);
     }
     
     @Override
@@ -15,7 +17,7 @@ public class Consumer implements Runnable {
     }
 
     public void consume() {
-        while (runFlag) {
+        while (runFlag.get()) {
             Message message;
             if (queue.isEmpty()) {
                 try {
@@ -24,7 +26,7 @@ public class Consumer implements Runnable {
                     break;
                 }
             }
-            if (!runFlag) {
+            if (!runFlag.get()) {
                 System.out.println("Consumer break");
                 break;
             }
@@ -35,8 +37,10 @@ public class Consumer implements Runnable {
     }
 
     public void stop() {
-        runFlag = false;
+        queue.stopConsume();
+        runFlag.set(false);
         queue.notifyAllForEmpty();
+
     }
 
     private void useMessage(Message message) {

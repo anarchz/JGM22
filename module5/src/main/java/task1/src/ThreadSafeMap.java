@@ -1,5 +1,3 @@
-package task1;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +10,7 @@ public class ThreadSafeMap {
         private final Object mutex;
 
         SynchronizedMap() {
-            map = new HashMap<>();
+            map = new HashMap<K,V>();
             mutex = this;
         }
 

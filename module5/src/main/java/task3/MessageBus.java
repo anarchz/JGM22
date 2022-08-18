@@ -2,16 +2,27 @@ package task3;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MessageBus {
     private Queue<Message> queue = new LinkedList<>();
     private final int maxSize;
     private final Object FULL_QUEUE = new Object();
     private final Object EMPTY_QUEUE = new Object();
+    private AtomicBoolean STOP = new AtomicBoolean(false);
 
     MessageBus(int maxSize) {
         this.maxSize = maxSize;
     }
+
+    public void stopConsume() {
+        STOP.set(true);
+    }
+
+    public boolean isStop() {
+        return STOP.get();
+    }
+
 
     public void waitOnFull() throws InterruptedException {
         synchronized (FULL_QUEUE) {

@@ -15,7 +15,12 @@ public class Init {
         consume.start();
 
         Thread.sleep(1000);
-        producer.stop();
         consumer.stop();
+        producer.stop();
+
     }
+
+    // добавить проверку с флагом
+    // executor
+    // atomicboolean вместо volatile
 }
